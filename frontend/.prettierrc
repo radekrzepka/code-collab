@@ -4,13 +4,14 @@
   "useTabs": false,
   "semi": true,
   "singleQuote": false,
-  "trailingComma": "es5",
+  "quoteProps": "as-needed",
+  "trailingComma": "all",
   "bracketSpacing": true,
-  "arrowParens": "avoid",
-  "proseWrap": "never",
+  "bracketSameLine": false,
+  "arrowParens": "always",
   "plugins": [
-    "prettier-plugin-tailwindcss",
-    "@ianvs/prettier-plugin-sort-imports"
+    "@ianvs/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss"
   ],
   "importOrder": [
     "<TYPES>",

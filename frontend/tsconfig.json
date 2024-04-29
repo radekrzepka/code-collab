@@ -17,6 +17,7 @@
     "target": "es2022",
     "moduleDetection": "force",
     "verbatimModuleSyntax": true,
+    "strictNullChecks": true,
     "plugins": [
       {
         "name": "next"
