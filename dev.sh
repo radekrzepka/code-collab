@@ -2,7 +2,7 @@
 
 echo "Starting C# backend..."
 cd backend
-dotnet run &
+dotnet watch &
 BACKEND_PID=$!
 
 echo "Starting Next.js frontend..."
