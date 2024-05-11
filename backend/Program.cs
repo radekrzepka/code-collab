@@ -12,6 +12,7 @@ namespace CodeCollab
 
       builder.Services.AddControllers();
       builder.Services.AddScoped<UserService>();
+
       builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
