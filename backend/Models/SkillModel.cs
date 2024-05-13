@@ -1,12 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace CodeCollab.Models.SkillModel
+namespace backend.Models
 {
   public class Skill
   {
     [Key]
     public int Id { get; set; }
     [Required]
-    public string Name { get; set; }
+    public required string Name { get; set; }
+    public List<User> Users { get; } = [];
   }
 }

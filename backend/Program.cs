@@ -1,10 +1,10 @@
-using CodeCollab.Database;
-using CodeCollab.Services.UserService;
+using backend.Database;
+using backend.Services;
 using Microsoft.EntityFrameworkCore;
 
-namespace CodeCollab
+namespace backend
 {
-  public class Program
+  public static class Program
   {
     public static void Main(string[] args)
     {
