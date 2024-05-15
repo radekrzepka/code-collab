@@ -5,7 +5,6 @@ import "./globals.css";
 
 import { getCurrentUser } from "./_api/user/get-current-user";
 import { UnauthorizedHeader } from "./_components/headers/unauthorized-header";
-import { cn } from "./_utils/utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
