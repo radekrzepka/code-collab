@@ -1,11 +1,14 @@
-import { Button } from "@/components/ui/button";
+import { getCurrentUser } from "./_api/user/get-current-user";
+import { HomePage } from "./_components/home/home-page";
 
-const HomePage = () => {
-  return (
-    <div>
-      <Button>Click me</Button>
-    </div>
-  );
+const MainPage = async () => {
+  const isLoggedIn = !!(await getCurrentUser());
+
+  if (isLoggedIn) {
+    //TODO: Dashboard
+  }
+
+  return <HomePage />;
 };
 
-export default HomePage;
+export default MainPage;
