@@ -3,7 +3,13 @@ import { Briefcase, Folder, Users } from "lucide-react";
 
 import { routes } from "@/_utils/routes";
 
-import { BrowseProjectCard } from "../project/browse-project-card";
+import { CarouselProjectCard } from "../project/carousel-project-card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselNext,
+  CarouselPrevious,
+} from "../ui/carousel";
 
 const EXAMPLE_PROJECTS_DATA = [
   {
@@ -33,6 +39,18 @@ const EXAMPLE_PROJECTS_DATA = [
     description:
       "Build a simple todo app using React and learn the basics of state management.",
     skills: ["JavaScript", "React", "Tailwind"],
+  },
+  {
+    id: 5,
+    name: "Rummikub solver",
+    description: "Rummikub solver",
+    skills: ["Rust", "Python", "React Native", "AI"],
+  },
+  {
+    id: 6,
+    name: "Quizzler",
+    description: "App for flashcards",
+    skills: ["C#", "TypeScript", "Next.js"],
   },
 ];
 
@@ -92,7 +110,7 @@ export const HomePage = () => {
         </div>
       </section>
       <section className="container mx-auto px-4 py-12 md:px-6">
-        <div className="space-y-6">
+        <div className="flex flex-col space-y-6">
           <div className="space-y-2 text-center">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
               Browse Projects
@@ -100,12 +118,22 @@ export const HomePage = () => {
             <p className="text-gray-400 md:text-lg">
               Explore available projects and get started collaborating today.
             </p>
+            <Link
+              href={routes.BROWSE_PROJECTS}
+              className="underline  md:text-lg"
+            >
+              Browse for more projects
+            </Link>
           </div>
-          <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {EXAMPLE_PROJECTS_DATA.map((project) => (
-              <BrowseProjectCard project={project} key={project.id} />
-            ))}
-          </div>
+          <Carousel className="mx-auto max-w-xs lg:max-w-lg xl:max-w-5xl 2xl:max-w-none">
+            <CarouselContent className="-ml-4">
+              {EXAMPLE_PROJECTS_DATA.map((project) => (
+                <CarouselProjectCard project={project} key={project.id} />
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
         </div>
       </section>
     </main>

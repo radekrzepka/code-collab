@@ -19,6 +19,7 @@
     "@t3-oss/env-nextjs": "^0.10.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "embla-carousel-react": "^8.0.4",
     "eslint-plugin-react-hooks": "^4.6.2",
     "husky": "^9.0.11",
     "jiti": "^1.21.0",
