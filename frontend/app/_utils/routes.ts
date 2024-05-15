@@ -5,3 +5,7 @@ export const routes = {
   BROWSE_PROJECTS: "/browse-projects",
   BROWSE_DEVELOPERS: "/browse-developers",
 };
+
+export const imagesRoutes = {
+  BROWSE_PROJECT_PLACEHOLDER: "/browse-project-placeholder.svg",
+};

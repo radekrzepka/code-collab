@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prepare": "husky"
   },
   "dependencies": {
     "@next/eslint-plugin-next": "^14.2.3",
@@ -19,6 +20,8 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "eslint-plugin-react-hooks": "^4.6.2",
+    "husky": "^9.0.11",
+    "jiti": "^1.21.0",
     "lucide-react": "^0.376.0",
     "next": "14.2.3",
     "react": "^18",

@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/_components/ui/card";
+import { imagesRoutes } from "@/_utils/routes";
 
 import { Badge } from "../ui/badge";
 
@@ -33,7 +34,7 @@ export const BrowseProjectCard = ({
           alt="Project Thumbnail"
           className="mx-auto"
           height={100}
-          src="/browse-project-placeholder.svg"
+          src={imagesRoutes.BROWSE_PROJECT_PLACEHOLDER}
           width={150}
         />
 
