@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace backend.Models
+namespace backend.Models.User
 {
   public class User
   {
@@ -12,16 +12,6 @@ namespace backend.Models
     public required string Email { get; set; }
     [Required]
     public required string Password { get; set; }
-
-    public List<Skill> Skills { get; set} = [];
-  }
-
-  public class UserRegisterDto
-  {
-    public int Id { get; set; }
-    public required string Name { get; set; }
-    public required string Email { get; set; }
-    public required string Password { get; set; }
-    public List<Skill> Skills { get; } = [];
+    public List<Skill> Skills { get; set; }
   }
 }

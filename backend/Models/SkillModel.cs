@@ -8,6 +8,6 @@ namespace backend.Models
     public int Id { get; set; }
     [Required]
     public required string Name { get; set; }
-    public List<User> Users { get; } = [];
+    public List<User.User> Users { get; } = [];
   }
 }

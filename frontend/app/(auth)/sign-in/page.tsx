@@ -59,7 +59,7 @@ const SignInPage = () => {
           </CardContent>
         </Card>
         <p className="text-sm text-gray-400">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link className="underline" href={routes.SIGN_UP}>
             Sign up
           </Link>

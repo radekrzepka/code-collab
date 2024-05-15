@@ -1,4 +1,5 @@
 using backend.Models;
+using backend.Models.User;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Database
@@ -16,7 +17,7 @@ namespace backend.Database
         .Entity<User>()
         .HasMany(e => e.Skills)
         .WithMany(e => e.Users)
-        .UsingEntity(
+        . UsingEntity(
           "UsersSkills",
           l => l.HasOne(typeof(Skill)).WithMany().HasForeignKey("SkillsId").HasPrincipalKey(nameof(Skill.Id)),
           r => r.HasOne(typeof(User)).WithMany().HasForeignKey("UsersId").HasPrincipalKey(nameof(User.Id)),
