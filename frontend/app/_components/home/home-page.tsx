@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Briefcase, Folder, Users } from "lucide-react";
 
+import { getProjects } from "@/_api/project/get-projects";
 import { routes } from "@/_utils/routes";
 
 import { CarouselProjectCard } from "../project/carousel-project-card";
@@ -11,53 +12,12 @@ import {
   CarouselPrevious,
 } from "../ui/carousel";
 
-const EXAMPLE_PROJECTS_DATA = [
-  {
-    id: 1,
-    name: "React Todo App",
-    description:
-      "Build a simple todo app using React and learn the basics of state management.",
-    skills: ["JavaScript", "React", "Tailwind"],
-  },
-  {
-    id: 2,
-    name: "E-commerce Website",
-    description:
-      "Build a full-featured e-commerce website using HTML, CSS, and JavaScript.",
-    skills: ["HTML", "CSS", "JavaScript"],
-  },
-  {
-    id: 3,
-    name: "Chat Application",
-    description:
-      "Develop a real-time chat application using WebSockets and learn about event-driven programming.",
-    skills: ["Next.js", "Express", "TypeScript", "React"],
-  },
-  {
-    id: 4,
-    name: "Recipe App",
-    description:
-      "Build a simple todo app using React and learn the basics of state management.",
-    skills: ["JavaScript", "React", "Tailwind"],
-  },
-  {
-    id: 5,
-    name: "Rummikub solver",
-    description: "Rummikub solver",
-    skills: ["Rust", "Python", "React Native", "AI"],
-  },
-  {
-    id: 6,
-    name: "Quizzler",
-    description: "App for flashcards",
-    skills: ["C#", "TypeScript", "Next.js"],
-  },
-];
+export const HomePage = async () => {
+  const projects = await getProjects();
 
-export const HomePage = () => {
   return (
     <main>
-      <section className="container mx-auto grid gap-12 px-4 py-12 md:grid-cols-2 md:items-center md:gap-16 md:px-6 lg:py-20 xl:gap-20">
+      <section className="container mx-auto grid gap-12 px-4 py-12 md:px-6">
         <div className="space-y-6">
           <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
             Find Your Perfect Project Partner
@@ -81,7 +41,7 @@ export const HomePage = () => {
           </div>
         </div>
       </section>
-      <section className="bg-muted py-12 md:py-16 lg:py-20">
+      <section className="bg-muted px-4 py-12  md:px-6 md:py-16 lg:py-20">
         <div className="container mx-auto grid gap-12 px-4 md:grid-cols-2 md:gap-16 md:px-6 lg:grid-cols-3 lg:gap-20">
           <div className="space-y-4">
             <Folder className="h-10 w-10" />
@@ -127,7 +87,7 @@ export const HomePage = () => {
           </div>
           <Carousel className="mx-auto max-w-xs lg:max-w-lg xl:max-w-5xl 2xl:max-w-none">
             <CarouselContent className="-ml-4">
-              {EXAMPLE_PROJECTS_DATA.map((project) => (
+              {projects.map((project) => (
                 <CarouselProjectCard project={project} key={project.id} />
               ))}
             </CarouselContent>

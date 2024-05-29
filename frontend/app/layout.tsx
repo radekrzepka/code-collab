@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import { getCurrentUser } from "./_api/user/get-current-user";
+import { AuthorizedHeader } from "./_components/headers/authorized-header";
 import { UnauthorizedHeader } from "./_components/headers/unauthorized-header";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -18,12 +19,16 @@ const RootLayout = async ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const isLoggedIn = !!(await getCurrentUser());
+  const currentUser = await getCurrentUser();
 
   return (
     <html lang="en">
       <body className={inter.className}>
-        {isLoggedIn ? <div /> : <UnauthorizedHeader />}
+        {currentUser !== null ? (
+          <AuthorizedHeader currentUser={currentUser} />
+        ) : (
+          <UnauthorizedHeader />
+        )}
         {children}
       </body>
     </html>
