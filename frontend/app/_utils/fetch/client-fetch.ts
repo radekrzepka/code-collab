@@ -1,12 +1,12 @@
-import { cookies } from "next/headers";
+import Cookies from "js-cookie";
 
-import { env } from "./envs/server";
+import { env } from "../envs/client";
 
-export const serverFetch = async (
+export const clientFetch = async (
   endpoint: string,
   options: RequestInit = {},
 ) => {
-  const baseUrl = env.API_URL;
+  const baseUrl = env.NEXT_PUBLIC_API_URL;
 
   const headers: HeadersInit = new Headers({
     "Content-Type": "application/json",
@@ -15,11 +15,10 @@ export const serverFetch = async (
     ...options.headers,
   });
 
-  const cookieStore = cookies();
-  const authToken = cookieStore.get("authToken");
+  const authToken = Cookies.get("authToken");
 
   if (authToken) {
-    headers.set("Authorization", `Bearer ${authToken.value}`);
+    headers.set("Authorization", `Bearer ${authToken}`);
   }
 
   console.log(`${baseUrl}${endpoint}`, {

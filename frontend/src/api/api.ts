@@ -9,9 +9,90 @@
  * ---------------------------------------------------------------
  */
 
+/** DTO for project details. */
+export interface GetProjectDto {
+  /**
+   * Gets or sets the project ID.
+   * @minLength 1
+   */
+  id: string;
+  /**
+   * Gets or sets the project name.
+   * @minLength 1
+   */
+  name: string;
+  /**
+   * Gets or sets the project description.
+   * @minLength 1
+   */
+  description: string;
+  /** Gets or sets the skills required for the project. */
+  lookingForSkills: string[];
+  /** Gets or sets the technology stack used in the project. */
+  technologyStack: string[];
+  /** DTO for user details. */
+  owner: GetUserDto;
+  /** Gets or sets the developers working on the project. */
+  developers: GetUserDto[];
+  /**
+   * Gets or sets the GitHub link for the project.
+   * @minLength 1
+   */
+  githubLink: string;
+}
+
+/** DTO for user details. */
+export interface GetUserDto {
+  /**
+   * Gets or sets the user ID.
+   * @minLength 1
+   */
+  id: string;
+  /**
+   * Gets or sets the username.
+   * @minLength 1
+   */
+  name: string;
+  /**
+   * Gets or sets the bio.
+   * @minLength 1
+   */
+  bio: string;
+  /**
+   * Gets or sets the email.
+   * @minLength 1
+   */
+  email: string;
+  /** Gets or sets the skills. */
+  skills: string[];
+  /** Gets or sets the tech stack. */
+  techStack: string[];
+  /** Gets or sets the projects. */
+  projects: GetProjectDto[];
+}
+
+/** DTO for user login. */
 export interface LoginUserDto {
-  username?: string | null;
-  password?: string | null;
+  /**
+   * Gets or sets the username.
+   * @minLength 1
+   */
+  username: string;
+  /**
+   * Gets or sets the password.
+   * @minLength 1
+   */
+  password: string;
+}
+
+export interface ProblemDetails {
+  type?: string | null;
+  title?: string | null;
+  /** @format int32 */
+  status?: number | null;
+  detail?: string | null;
+  instance?: string | null;
+  [key: string]: any;
 }
 
 export interface RegisterUserDto {
@@ -37,6 +118,15 @@ export interface RegisterUserDto {
   skills: string[];
   /** Gets or sets the tech stack. */
   techStack: string[];
+}
+
+/** DTO for token response. */
+export interface TokenDto {
+  /**
+   * Gets or sets the JWT token.
+   * @minLength 1
+   */
+  token: string;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -312,12 +402,13 @@ export class Api<
      * @secure
      */
     registerCreate: (data: RegisterUserDto, params: RequestParams = {}) =>
-      this.request<void, void>({
+      this.request<string, string>({
         path: `/User/register`,
         method: "POST",
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
@@ -331,12 +422,13 @@ export class Api<
      * @secure
      */
     loginCreate: (data: LoginUserDto, params: RequestParams = {}) =>
-      this.request<void, void>({
+      this.request<TokenDto, ProblemDetails>({
         path: `/User/login`,
         method: "POST",
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
@@ -350,10 +442,11 @@ export class Api<
      * @secure
      */
     currentList: (params: RequestParams = {}) =>
-      this.request<void, void>({
+      this.request<GetUserDto, ProblemDetails>({
         path: `/User/current`,
         method: "GET",
         secure: true,
+        format: "json",
         ...params,
       }),
   };

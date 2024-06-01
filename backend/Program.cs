@@ -22,6 +22,15 @@ namespace backend
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            builder.Services.AddCors(options =>
+            {
+              options.AddPolicy("AllowAll",
+                builder => builder
+                  .AllowAnyOrigin()
+                  .AllowAnyMethod()
+                  .AllowAnyHeader());
+            });
+            
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
             {
@@ -101,6 +110,8 @@ namespace backend
             }
 
             app.UseHttpsRedirection();
+            
+            app.UseCors("AllowAll");
 
             app.UseAuthentication();
             app.UseAuthorization();

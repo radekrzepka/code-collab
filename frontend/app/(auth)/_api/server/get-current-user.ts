@@ -1,6 +1,6 @@
 import type { GetUserDto } from "@/_types/dto/dto";
 
-import { serverFetch } from "@/_utils/server-fetch";
+import { serverFetch } from "@/_utils/fetch/server-fetch";
 
 export const getCurrentUser = async (): Promise<GetUserDto | null> => {
   const res = await serverFetch("/User/current");

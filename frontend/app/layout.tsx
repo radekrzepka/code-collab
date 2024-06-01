@@ -5,7 +5,9 @@ import "./globals.css";
 
 import { AuthorizedHeader } from "./_components/headers/authorized-header";
 import { UnauthorizedHeader } from "./_components/headers/unauthorized-header";
-import { getCurrentUser } from "./(auth)/_api/get-current-user";
+import { Toaster } from "./_components/ui/sonner";
+import { QueryClientProvider } from "./_utils/providers/query-client-provider";
+import { getCurrentUser } from "./(auth)/_api/server/get-current-user";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,12 +26,15 @@ const RootLayout = async ({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {currentUser !== null ? (
-          <AuthorizedHeader currentUser={currentUser} />
-        ) : (
-          <UnauthorizedHeader />
-        )}
-        {children}
+        <QueryClientProvider>
+          {currentUser !== null ? (
+            <AuthorizedHeader currentUser={currentUser} />
+          ) : (
+            <UnauthorizedHeader />
+          )}
+          {children}
+          <Toaster position="top-right" richColors />
+        </QueryClientProvider>
       </body>
     </html>
   );

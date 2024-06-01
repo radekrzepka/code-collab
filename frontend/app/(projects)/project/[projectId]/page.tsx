@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { Badge } from "@/_components/ui/badge";
 import { Button } from "@/_components/ui/button";
-import { getCurrentUser } from "@/(auth)/_api/get-current-user";
+import { getCurrentUser } from "@/(auth)/_api/server/get-current-user";
 import { DeveloperCard } from "@/(developers)/_components/developer-card";
 import { getProject } from "@/(projects)/_api/get-project";
 
