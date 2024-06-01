@@ -3,9 +3,9 @@ import { Inter } from "next/font/google";
 
 import "./globals.css";
 
-import { getCurrentUser } from "./_api/user/get-current-user";
 import { AuthorizedHeader } from "./_components/headers/authorized-header";
 import { UnauthorizedHeader } from "./_components/headers/unauthorized-header";
+import { getCurrentUser } from "./(auth)/_api/get-current-user";
 
 const inter = Inter({ subsets: ["latin"] });
 

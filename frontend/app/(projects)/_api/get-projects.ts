@@ -1,7 +1,7 @@
 import type { Project } from "@/_types/project";
 import type { User } from "@/_types/user";
 
-const EXAMPLE_USERS_DATA = [
+export const EXAMPLE_USERS_DATA = [
   {
     id: "1",
     email: "test@test.com",
@@ -9,6 +9,7 @@ const EXAMPLE_USERS_DATA = [
     skills: ["Frontend", "Backend"],
     techStack: ["JavaScript", "TypeScript", "React", "Node.js"],
     projects: [],
+    bio: "A passionate full-stack developer with a knack for building robust and scalable web applications.",
   },
   {
     id: "2",
@@ -17,6 +18,7 @@ const EXAMPLE_USERS_DATA = [
     skills: ["Frontend", "UX/UI"],
     techStack: ["HTML", "CSS", "JavaScript"],
     projects: [],
+    bio: "Frontend developer and UX/UI enthusiast who loves creating beautiful and user-friendly interfaces.",
   },
   {
     id: "3",
@@ -25,6 +27,7 @@ const EXAMPLE_USERS_DATA = [
     skills: ["Backend", "Database"],
     techStack: ["Python", "Django", "PostgreSQL"],
     projects: [],
+    bio: "Experienced backend developer specializing in Django and PostgreSQL for building efficient database-driven applications.",
   },
   {
     id: "4",
@@ -33,6 +36,7 @@ const EXAMPLE_USERS_DATA = [
     skills: ["Frontend", "Design"],
     techStack: ["JavaScript", "React", "Photoshop"],
     projects: [],
+    bio: "Creative frontend developer with a strong design background, adept at bringing digital designs to life.",
   },
   {
     id: "5",
@@ -41,6 +45,7 @@ const EXAMPLE_USERS_DATA = [
     skills: ["DevOps", "Backend"],
     techStack: ["Docker", "Kubernetes", "Node.js"],
     projects: [],
+    bio: "DevOps specialist with extensive experience in Docker and Kubernetes, ensuring smooth and efficient backend operations.",
   },
 ] satisfies Array<User>;
 

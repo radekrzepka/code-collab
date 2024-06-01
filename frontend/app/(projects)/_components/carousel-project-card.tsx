@@ -1,6 +1,7 @@
 import type { Project } from "@/_types/project";
 
-import { CarouselItem } from "../ui/carousel";
+import { CarouselItem } from "@/_components/ui/carousel";
+
 import { BrowseProjectCard } from "./browse-project-card";
 
 interface CarouselProjectCardProps {

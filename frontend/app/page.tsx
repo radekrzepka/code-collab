@@ -1,6 +1,6 @@
-import { getCurrentUser } from "./_api/user/get-current-user";
 import { Dashboard } from "./_components/dashboard/dashboard";
 import { HomePage } from "./_components/home/home-page";
+import { getCurrentUser } from "./(auth)/_api/get-current-user";
 
 const MainPage = async () => {
   const currentUser = await getCurrentUser();

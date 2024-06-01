@@ -1,4 +1,4 @@
-import { CreateProject } from "@/_components/project/create-project";
+import { CreateProject } from "../_components/create-project";
 
 const CreateProjectPage = () => {
   return <CreateProject />;

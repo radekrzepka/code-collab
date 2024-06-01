@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { Briefcase, Folder, Users } from "lucide-react";
 
-import { getProjects } from "@/_api/project/get-projects";
 import { routes } from "@/_utils/routes";
+import { getProjects } from "@/(projects)/_api/get-projects";
+import { CarouselProjectCard } from "@/(projects)/_components/carousel-project-card";
 
-import { CarouselProjectCard } from "../project/carousel-project-card";
 import {
   Carousel,
   CarouselContent,

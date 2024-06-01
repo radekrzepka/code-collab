@@ -2,6 +2,7 @@ import type { Project } from "@/_types/project";
 import Image from "next/image";
 import Link from "next/link";
 
+import { Badge } from "@/_components/ui/badge";
 import {
   Card,
   CardContent,
@@ -10,8 +11,6 @@ import {
   CardTitle,
 } from "@/_components/ui/card";
 import { imagesRoutes, routes } from "@/_utils/routes";
-
-import { Badge } from "../ui/badge";
 
 interface BrowseProjectCardProps {
   project: Project;

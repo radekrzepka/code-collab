@@ -1,10 +1,10 @@
 import Link from "next/link";
 
-import { getProject } from "@/_api/project/get-project";
-import { getCurrentUser } from "@/_api/user/get-current-user";
-import { DeveloperCard } from "@/_components/developer/developer-card";
 import { Badge } from "@/_components/ui/badge";
 import { Button } from "@/_components/ui/button";
+import { getCurrentUser } from "@/(auth)/_api/get-current-user";
+import { DeveloperCard } from "@/(developers)/_components/developer-card";
+import { getProject } from "@/(projects)/_api/get-project";
 
 const ProjectPage = async ({
   params: { projectId },
@@ -65,13 +65,13 @@ const ProjectPage = async ({
         </div>
         <div>
           <h2 className="mb-2 text-xl font-bold">Owner: </h2>
-          <div className="flex flex-col gap-y-2">
+          <div className="flex gap-y-2">
             <DeveloperCard key={owner.id} developer={owner} />
           </div>
         </div>
         <div>
           <h2 className="mb-2 text-xl font-bold">Current Team: </h2>
-          <div className="flex flex-col gap-y-2">
+          <div className="flex gap-2">
             {developers.map((developer) => (
               <DeveloperCard key={developer.id} developer={developer} />
             ))}
