@@ -1,4 +1,5 @@
 version: "3.8"
+
 services:
   code-collab-backend:
     container_name: code-collab-backend
@@ -6,12 +7,16 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        ASPNETCORE_ENVIRONMENT: Development
+        ASPNETCORE_ENVIRONMENT: Production
     ports:
       - "3003:5009"
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ASPNETCORE_URLS: http://+:5009
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:5009
+      - ConnectionStrings__DefaultConnection=Host=code-collab-database;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      - JwtSettings__Issuer=${JWT_ISSUER}
+      - JwtSettings__Audience=${JWT_AUDIENCE}
+      - JwtSettings__SecretKey=${JWT_SECRET}
     depends_on:
       - code-collab-database
 
