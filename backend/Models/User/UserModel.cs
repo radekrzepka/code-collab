@@ -1,17 +1,17 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace backend.Models.User
+namespace backend.Models
 {
   public class User
   {
-    [Key]
     public int Id { get; set; }
-    [Required]
-    public required string Name { get; set; }
-    [Required]
-    public required string Email { get; set; }
-    [Required]
-    public required string Password { get; set; }
-    public List<Skill> Skills { get; set; }
+    public string Name { get; set; }
+    public string Bio { get; set; }
+    public string Email { get; set; }
+    public string PasswordHash { get; set; }
+    public ICollection<Skill> Skills { get; set; }
+    public ICollection<TechStack> TechStacks { get; set; }
+    public ICollection<Project> Projects { get; set; }
+    public ICollection<Project> OwnedProjects { get; set; }
   }
 }

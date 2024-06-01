@@ -1,16 +1,18 @@
-import type { User } from "@/_types/user";
+import type { GetUserDto } from "@/_types/dto/dto";
 
-import { EXAMPLE_PROJECTS_DATA } from "@/(projects)/_api/get-projects";
+import { serverFetch } from "@/_utils/server-fetch";
 
-export const getCurrentUser = async (): Promise<User | null> => {
-  // return null;
-  return {
-    id: "4",
-    email: "test4@test.com",
-    name: "Alice",
-    bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at tempor enim. Fusce cursus semper urna, a rutrum dolor cursus a. Sed nec porttitor diam. Ut eget porttitor tortor, ac dignissim mauris. Nullam lorem magna, faucibus non mattis sed, consectetur quis libero. Duis ultrices felis sed metus porttitor pretium",
-    skills: ["Frontend", "Design"],
-    techStack: ["JavaScript", "React", "Photoshop"],
-    projects: EXAMPLE_PROJECTS_DATA,
-  };
+export const getCurrentUser = async (): Promise<GetUserDto | null> => {
+  const res = await serverFetch("/User/current");
+
+  if (res && res.status === 401) {
+    return null;
+  }
+
+  if (!res || !res.ok) {
+    console.error(res);
+    throw new Error("Error while fetching /User/current");
+  }
+
+  return (await res.json()) as GetUserDto;
 };

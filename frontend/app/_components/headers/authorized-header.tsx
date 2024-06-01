@@ -1,3 +1,4 @@
+import type { GetUserDto } from "@/_types/dto/dto";
 import type { User } from "@/_types/user";
 import Link from "next/link";
 
