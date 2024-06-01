@@ -24,13 +24,13 @@ namespace backend
 
             builder.Services.AddCors(options =>
             {
-              options.AddPolicy("AllowAll",
-                builder => builder
-                  .AllowAnyOrigin()
-                  .AllowAnyMethod()
-                  .AllowAnyHeader());
+                options.AddPolicy("AllowAll",
+                    builder => builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
             });
-            
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
             {
@@ -102,6 +102,13 @@ namespace backend
             });
 
             var app = builder.Build();
+            
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetRequiredService<ApplicationDbContext>();
+                context.Database.Migrate();
+            }
 
             if (app.Environment.IsDevelopment())
             {
