@@ -22,22 +22,11 @@ export const serverFetch = async (
     headers.set("Authorization", `Bearer ${authToken.value}`);
   }
 
-  console.log(`${baseUrl}${endpoint}`, {
+  const response = await fetch(`${baseUrl}${endpoint}`, {
     ...options,
     headers,
     cache: "no-store",
   });
 
-  try {
-    const response = await fetch(`${baseUrl}${endpoint}`, {
-      ...options,
-      headers,
-      cache: "no-store",
-    });
-
-    return response;
-  } catch (e) {
-    console.log(e);
-    console.error(e);
-  }
+  return response;
 };

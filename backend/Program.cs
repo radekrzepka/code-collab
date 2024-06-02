@@ -18,6 +18,8 @@ namespace backend
             builder.Services.AddControllers();
             builder.Services.AddScoped<UserService>();
             builder.Services.AddScoped<TokenService>();
+            builder.Services.AddScoped<TechStackService>();
+            builder.Services.AddScoped<SkillService>();
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -37,19 +39,8 @@ namespace backend
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "User API",
-                    Description = "An ASP.NET Core Web API for managing users and authentication",
-                    TermsOfService = new Uri("https://example.com/terms"),
-                    Contact = new OpenApiContact
-                    {
-                        Name = "Example Contact",
-                        Url = new Uri("https://example.com/contact")
-                    },
-                    License = new OpenApiLicense
-                    {
-                        Name = "Example License",
-                        Url = new Uri("https://example.com/license")
-                    }
+                    Title = "Code Collab API",
+                    Description = "An ASP.NET Core Web API for code collab app",
                 });
 
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";

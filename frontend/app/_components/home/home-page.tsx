@@ -25,20 +25,6 @@ export const HomePage = async () => {
           <p className="text-lg text-gray-400 md:text-xl lg:text-2xl">
             Collaborate with fellow beginners to build amazing projects
           </p>
-          <div className="flex flex-col gap-4 sm:flex-row">
-            <Link
-              className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950"
-              href={routes.SIGN_IN}
-            >
-              Sign In
-            </Link>
-            <Link
-              className="inline-flex h-10 items-center justify-center rounded-md bg-gray-50 px-6 text-sm font-medium text-gray-900 shadow transition-colors hover:bg-gray-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950"
-              href={routes.SIGN_UP}
-            >
-              Sign Up
-            </Link>
-          </div>
         </div>
       </section>
       <section className="bg-muted px-4 py-12  md:px-6 md:py-16 lg:py-20">

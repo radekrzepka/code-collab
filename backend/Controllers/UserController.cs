@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using backend.Models.Token;
+using backend.Models.Utils;
 
 namespace backend.Controllers
 {
@@ -29,17 +30,17 @@ namespace backend.Controllers
         /// <response code="200">Returns a message indicating the user was registered successfully.</response>
         /// <response code="400">Returns a message indicating the registration failed.</response>
         [HttpPost("register")]
-        [ProducesResponseType(typeof(string), 200)]
-        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(typeof(DefaultApiResponseDto), 200)]
+        [ProducesResponseType(typeof(DefaultApiResponseDto), 400)]
         public async Task<IActionResult> Register([FromBody] RegisterUserDto user)
         {
-            var result = await _userService.RegisterUserAsync(user);
-            if (!result.Success)
-            {
-                return BadRequest(result.Message);
-            }
+          var result = await _userService.RegisterUserAsync(user);
+          if (!result.Success)
+          {
+            return BadRequest(new DefaultApiResponseDto(result.Message));
+          }
 
-            return Ok(result.Message);
+          return Ok(new DefaultApiResponseDto(result.Message));
         }
 
         /// <summary>

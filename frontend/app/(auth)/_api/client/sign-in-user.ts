@@ -8,7 +8,7 @@ export const signInUser = async (body: LoginUserDto): Promise<TokenDto> => {
     body: JSON.stringify(body),
   });
 
-  if (!res || !res.ok) {
+  if (!res.ok) {
     throw new Error("Failed to log in");
   }
 

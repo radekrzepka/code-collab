@@ -9,6 +9,11 @@
  * ---------------------------------------------------------------
  */
 
+export interface DefaultApiResponseDto {
+  /** @minLength 1 */
+  message: string;
+}
+
 /** DTO for project details. */
 export interface GetProjectDto {
   /**
@@ -118,6 +123,20 @@ export interface RegisterUserDto {
   skills: string[];
   /** Gets or sets the tech stack. */
   techStack: string[];
+}
+
+export interface SkillDto {
+  /** @format int32 */
+  id: number;
+  /** @minLength 1 */
+  name: string;
+}
+
+export interface TechStackDto {
+  /** @format int32 */
+  id: number;
+  /** @minLength 1 */
+  name: string;
 }
 
 /** DTO for token response. */
@@ -380,17 +399,52 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title User API
+ * @title Code Collab API
  * @version v1
- * @license Example License (https://example.com/license)
- * @termsOfService https://example.com/terms
- * @contact Example Contact (https://example.com/contact)
  *
- * An ASP.NET Core Web API for managing users and authentication
+ * An ASP.NET Core Web API for code collab app
  */
 export class Api<
   SecurityDataType extends unknown,
 > extends HttpClient<SecurityDataType> {
+  skill = {
+    /**
+     * No description
+     *
+     * @tags Skill
+     * @name SkillList
+     * @summary Gets all available tech stacks.
+     * @request GET:/Skill
+     * @secure
+     */
+    skillList: (params: RequestParams = {}) =>
+      this.request<SkillDto[], any>({
+        path: `/Skill`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+  };
+  techStack = {
+    /**
+     * No description
+     *
+     * @tags TechStack
+     * @name TechStackList
+     * @summary Gets all available tech stacks.
+     * @request GET:/TechStack
+     * @secure
+     */
+    techStackList: (params: RequestParams = {}) =>
+      this.request<TechStackDto[], any>({
+        path: `/TechStack`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+  };
   user = {
     /**
      * No description
@@ -402,7 +456,7 @@ export class Api<
      * @secure
      */
     registerCreate: (data: RegisterUserDto, params: RequestParams = {}) =>
-      this.request<string, string>({
+      this.request<DefaultApiResponseDto, DefaultApiResponseDto>({
         path: `/User/register`,
         method: "POST",
         body: data,

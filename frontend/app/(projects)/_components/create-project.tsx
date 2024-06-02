@@ -3,9 +3,7 @@ import { Input } from "@/_components/ui/input";
 import { Label } from "@/_components/ui/label";
 import { Textarea } from "@/_components/ui/textarea";
 
-interface CreateProjectProps {}
-
-export const CreateProject = ({}: CreateProjectProps) => {
+export const CreateProject = () => {
   return (
     <section className="container mx-auto px-4 py-8 md:px-6 lg:px-8">
       <main className="mx-auto max-w-3xl space-y-8">

@@ -1,4 +1,3 @@
-import type { GetUserDto } from "@/_types/dto/dto";
 import type { User } from "@/_types/user";
 import Link from "next/link";
 
@@ -12,7 +11,7 @@ interface AuthorizedHeaderProps {
 }
 
 export const AuthorizedHeader = ({
-  currentUser: { name, id },
+  currentUser: { name },
 }: AuthorizedHeaderProps) => {
   return (
     <header className="flex flex-col items-center justify-between gap-4 px-4 py-6 md:flex-row md:px-6 lg:py-8">
