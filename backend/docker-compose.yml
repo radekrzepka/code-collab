@@ -10,6 +10,7 @@ services:
         ASPNETCORE_ENVIRONMENT: Production
     ports:
       - "3003:5009"
+    restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:5009
@@ -25,6 +26,7 @@ services:
     image: postgres:16
     ports:
       - "54323:5432"
+    restart: always
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
