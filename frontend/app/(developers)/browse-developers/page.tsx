@@ -1,9 +1,11 @@
 import { Input } from "@/_components/ui/input";
-import { EXAMPLE_USERS_DATA } from "@/(projects)/_api/get-projects";
 
+import { getAllDevelopers } from "../_api/get-all-developers";
 import { DeveloperCard } from "../_components/developer-card";
 
-export default function Component() {
+const BrowseDevelopersPage = async () => {
+  const developers = await getAllDevelopers();
+
   return (
     <section className="container mx-auto px-4 py-8 md:px-6 lg:px-8">
       <div className="flex flex-col items-center justify-center space-y-4 text-center">
@@ -20,11 +22,13 @@ export default function Component() {
           />
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {EXAMPLE_USERS_DATA.map((developer) => (
+          {developers.map((developer) => (
             <DeveloperCard key={developer.id} developer={developer} />
           ))}
         </div>
       </div>
     </section>
   );
-}
+};
+
+export default BrowseDevelopersPage;

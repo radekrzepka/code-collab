@@ -14,13 +14,13 @@ const ProjectPage = async ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentUser, project] = await Promise.all([
     getCurrentUser(),
-    getProject(projectId),
+    getProject(parseInt(projectId)),
   ]);
 
   const {
     description,
     githubLink,
-    lookingForSkills,
+    skills,
     name,
     technologyStack,
     developers,
@@ -39,7 +39,7 @@ const ProjectPage = async ({
         <div className="flex flex-col gap-2">
           <h2 className="text-xl font-bold">Looking for: </h2>
           <div className="flex flex-wrap gap-2">
-            {lookingForSkills.map((skill) => (
+            {skills.map((skill) => (
               <Badge variant="outline" key={skill}>
                 {skill}
               </Badge>

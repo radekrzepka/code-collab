@@ -18,7 +18,7 @@ interface BrowseProjectCardProps {
 }
 
 export const BrowseProjectCard = ({
-  project: { description, id, name, lookingForSkills, technologyStack },
+  project: { description, id, name, skills, technologyStack },
   hideLookingFor = false,
 }: BrowseProjectCardProps) => {
   return (
@@ -41,7 +41,7 @@ export const BrowseProjectCard = ({
               {" "}
               <p>Looking for: </p>
               <div className=" flex flex-wrap gap-2">
-                {lookingForSkills.map((skill) => (
+                {skills.map((skill) => (
                   <Badge variant="outline" key={skill}>
                     {skill}
                   </Badge>

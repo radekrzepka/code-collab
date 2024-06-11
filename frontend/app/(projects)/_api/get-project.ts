@@ -1,9 +1,13 @@
-import type { Project } from "@/_types/project";
+import type { GetProjectDto } from "@/_types/dto/dto";
 
-import { EXAMPLE_PROJECTS_DATA } from "./get-projects";
+import { serverFetch } from "@/_utils/fetch/server-fetch";
 
-export const getProject = (projectId: string) => {
-  return EXAMPLE_PROJECTS_DATA.find(
-    (project) => project.id === projectId,
-  ) as Project;
+export const getProject = async (projectId: number): Promise<GetProjectDto> => {
+  const res = await serverFetch(`/Project/${projectId}`);
+
+  if (!res.ok) {
+    throw new Error(`Error while fetching /Project/${projectId}`);
+  }
+
+  return (await res.json()) as GetProjectDto;
 };

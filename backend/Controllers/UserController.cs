@@ -93,5 +93,18 @@ namespace backend.Controllers
 
             return Ok(user);
         }
+        
+        /// <summary>
+        /// Gets all users with their skills and tech stacks.
+        /// </summary>
+        /// <returns>List of users.</returns>
+        /// <response code="200">Returns the list of users.</response>
+        [HttpGet()]
+        [ProducesResponseType(typeof(List<UserListDto>), 200)]
+        public async Task<IActionResult> GetAllUsers()
+        {
+          var users = await _userService.GetAllUsersAsync();
+          return Ok(users);
+        }
     }
 }

@@ -9,6 +9,16 @@
  * ---------------------------------------------------------------
  */
 
+export interface CreateProjectDto {
+  /** @minLength 1 */
+  name: string;
+  /** @minLength 1 */
+  description: string;
+  githubLink?: string | null;
+  skills: string[];
+  techStacks: string[];
+}
+
 export interface DefaultApiResponseDto {
   /** @minLength 1 */
   message: string;
@@ -32,7 +42,7 @@ export interface GetProjectDto {
    */
   description: string;
   /** Gets or sets the skills required for the project. */
-  lookingForSkills: string[];
+  skills: string[];
   /** Gets or sets the technology stack used in the project. */
   technologyStack: string[];
   /** DTO for user details. */
@@ -146,6 +156,17 @@ export interface TokenDto {
    * @minLength 1
    */
   token: string;
+}
+
+export interface UserListDto {
+  /** @minLength 1 */
+  id: string;
+  /** @minLength 1 */
+  name: string;
+  /** @minLength 1 */
+  bio: string;
+  skills: string[];
+  techStack: string[];
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -407,6 +428,57 @@ export class HttpClient<SecurityDataType = unknown> {
 export class Api<
   SecurityDataType extends unknown,
 > extends HttpClient<SecurityDataType> {
+  project = {
+    /**
+     * No description
+     *
+     * @tags Project
+     * @name ProjectDetail
+     * @request GET:/Project/{id}
+     * @secure
+     */
+    projectDetail: (id: number, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/Project/${id}`,
+        method: "GET",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Project
+     * @name ProjectList
+     * @request GET:/Project
+     * @secure
+     */
+    projectList: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/Project`,
+        method: "GET",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Project
+     * @name ProjectCreate
+     * @request POST:/Project
+     * @secure
+     */
+    projectCreate: (data: CreateProjectDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/Project`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+  };
   skill = {
     /**
      * No description
@@ -498,6 +570,24 @@ export class Api<
     currentList: (params: RequestParams = {}) =>
       this.request<GetUserDto, ProblemDetails>({
         path: `/User/current`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags User
+     * @name UserList
+     * @summary Gets all users with their skills and tech stacks.
+     * @request GET:/User
+     * @secure
+     */
+    userList: (params: RequestParams = {}) =>
+      this.request<UserListDto[], any>({
+        path: `/User`,
         method: "GET",
         secure: true,
         format: "json",

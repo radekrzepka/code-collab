@@ -23,19 +23,19 @@ export const AuthorizedHeader = ({
       </Link>
       <nav className="flex flex-row items-center gap-5 text-sm font-medium sm:flex lg:gap-6">
         <Link
-          className="whitespace-nowrap text-gray-500 dark:text-gray-400"
+          className="whitespace-nowrap text-gray-500 hover:text-white"
           href={routes.CREATE_PROJECT}
         >
           Create Project
         </Link>
         <Link
-          className="whitespace-nowrap text-gray-500 dark:text-gray-400"
+          className="whitespace-nowrap text-gray-500 hover:text-white"
           href={routes.BROWSE_PROJECTS}
         >
           Find Projects
         </Link>
         <Link
-          className="whitespace-nowrap text-gray-500 dark:text-gray-400"
+          className="whitespace-nowrap text-gray-500 hover:text-white"
           href={routes.BROWSE_DEVELOPERS}
         >
           Find Developers

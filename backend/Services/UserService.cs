@@ -7,34 +7,41 @@ using System.Threading.Tasks;
 
 namespace backend.Services
 {
-    public class UserService
+    public class UserService(ApplicationDbContext context, TokenService tokenService)
     {
-        private readonly ApplicationDbContext _context;
-        private readonly TokenService _tokenService;
-
-        public UserService(ApplicationDbContext context, TokenService tokenService)
+      public async Task<List<UserListDto>> GetAllUsersAsync()
         {
-            _context = context;
-            _tokenService = tokenService;
+          return await context.Users
+            .Include(u => u.Skills)
+            .Include(u => u.TechStacks)
+            .Select(u => new UserListDto
+            {
+              Id = u.Id.ToString(),
+              Name = u.Name,
+              Bio = u.Bio,
+              Skills = u.Skills.Select(s => s.Name).ToList(),
+              TechStack = u.TechStacks.Select(t => t.Name).ToList()
+            })
+            .ToListAsync();
         }
 
         public async Task<(bool Success, string Message)> RegisterUserAsync(RegisterUserDto model)
         {
             // Check if username or email already exists
-            if (await _context.Users.AnyAsync(u => u.Name == model.Username || u.Email == model.Email))
+            if (await context.Users.AnyAsync(u => u.Name == model.Username || u.Email == model.Email))
             {
                 return (false, "Username or Email already exists");
             }
 
             // Validate Skills
-            var skills = await _context.Skills.Where(s => model.Skills.Contains(s.Name)).ToListAsync();
+            var skills = await context.Skills.Where(s => model.Skills.Contains(s.Name)).ToListAsync();
             if (skills.Count != model.Skills.Length)
             {
                 return (false, "One or more skills are invalid");
             }
 
             // Validate TechStack
-            var techStack = await _context.TechStacks.Where(t => model.TechStack.Contains(t.Name)).ToListAsync();
+            var techStack = await context.TechStacks.Where(t => model.TechStack.Contains(t.Name)).ToListAsync();
             if (techStack.Count != model.TechStack.Length)
             {
                 return (false, "One or more tech stack items are invalid");
@@ -53,80 +60,112 @@ namespace backend.Services
             // Hash password (you should use a proper hashing method)
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            context.Users.Add(user);
+            await context.SaveChangesAsync();
 
             return (true, "User registered successfully");
         }
 
         public async Task<string> AuthenticateUserAsync(string username, string password)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Name == username);
+            var user = await context.Users.FirstOrDefaultAsync(u => u.Name == username);
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
             {
                 return null;
             }
 
-            return _tokenService.GenerateToken(user.Id.ToString());
+            return tokenService.GenerateToken(user.Id.ToString());
         }
 
         public async Task<GetUserDto> GetUserByIdAsync(string userId)
         {
-            var user = await _context.Users
-                .Include(u => u.Skills)
-                .Include(u => u.TechStacks)
-                .Include(u => u.Projects)
-                .ThenInclude(project => project.LookingForSkills)
-                .Include(u => u.Projects)
-                .ThenInclude(project => project.TechnologyStack)
-                .Include(u => u.Projects)
-                .ThenInclude(project => project.Owner)
-                .Include(u => u.Projects)
-                .ThenInclude(project => project.Developers)
-                .FirstOrDefaultAsync(u => u.Id.ToString() == userId);
-
-            if (user == null)
+          var user = await context.Users
+            .Where(u => u.Id.ToString() == userId)
+            .Include(u => u.Skills)
+            .Include(u => u.TechStacks)
+            .Include(u => u.Projects)
+            .ThenInclude(p => p.LookingForSkills)
+            .Include(u => u.Projects)
+            .ThenInclude(p => p.TechnologyStack)
+            .Include(u => u.Projects)
+            .ThenInclude(p => p.Developers)
+            .Include(u => u.OwnedProjects)
+            .FirstOrDefaultAsync();
+          
+          if (user == null)
+          {
+            return null;
+          }
+          
+          Console.WriteLine($"User ID: {user.Id}");
+          Console.WriteLine($"Name: {user.Name}");
+          Console.WriteLine($"Bio: {user.Bio}");
+          Console.WriteLine($"Email: {user.Email}");
+          Console.WriteLine("Skills:");
+          foreach (var skill in user.Skills)
+          {
+            Console.WriteLine($"  - {skill.Name}");
+          }
+          Console.WriteLine("TechStacks:");
+          foreach (var techStack in user.TechStacks)
+          {
+            Console.WriteLine($"  - {techStack.Name}");
+          }
+          Console.WriteLine("Projects:");
+          foreach (var project in user.Projects)
+          {
+            Console.WriteLine($"  - Project ID: {project.Id}, Name: {project.Name}");
+            Console.WriteLine("    LookingForSkills:");
+            foreach (var skill in project.LookingForSkills)
             {
-                return null;
+              Console.WriteLine($"      - {skill.Name}");
             }
-
-            return new GetUserDto
+            Console.WriteLine("    TechnologyStack:");
+            foreach (var tech in project.TechnologyStack)
             {
-                Id = user.Id.ToString(),
-                Name = user.Name,
-                Bio = user.Bio,
-                Email = user.Email,
-                Skills = user.Skills.Select(s => s.Name).ToList(),
-                TechStack = user.TechStacks.Select(t => t.Name).ToList(),
-                Projects = user.Projects.Select(p => new GetProjectDto
-                {
-                    Id = p.Id.ToString(),
-                    Name = p.Name,
-                    Description = p.Description,
-                    LookingForSkills = p.LookingForSkills.Select(s => s.Name).ToList(),
-                    TechnologyStack = p.TechnologyStack.Select(t => t.Name).ToList(),
-                    Owner = new GetUserDto
-                    {
-                        Id = p.Owner.Id.ToString(),
-                        Name = p.Owner.Name,
-                        Bio = p.Owner.Bio,
-                        Email = p.Owner.Email,
-                        Skills = p.Owner.Skills.Select(s => s.Name).ToList(),
-                        TechStack = p.Owner.TechStacks.Select(t => t.Name).ToList()
-                    },
-                    Developers = p.Developers.Select(d => new GetUserDto
-                    {
-                        Id = d.Id.ToString(),
-                        Name = d.Name,
-                        Bio = d.Bio,
-                        Email = d.Email,
-                        Skills = d.Skills.Select(s => s.Name).ToList(),
-                        TechStack = d.TechStacks.Select(t => t.Name).ToList()
-                    }).ToList(),
-                    GithubLink = p.GithubLink
-                }).ToList()
-            };
+              Console.WriteLine($"      - {tech.Name}");
+            }
+            Console.WriteLine("    Developers:");
+            foreach (var dev in project.Developers)
+            {
+              Console.WriteLine($"      - {dev.Name} ({dev.Email})");
+            }
+            Console.WriteLine($"    Owner: {project.Owner.Name} ({project.Owner.Email})");
+            Console.WriteLine($"    GithubLink: {project.GithubLink}");
+          }
+
+          return new GetUserDto
+          {
+            Id = user.Id.ToString(),
+            Name = user.Name,
+            Bio = user.Bio,
+            Email = user.Email,
+            Skills = user.Skills.Select(s => s.Name).ToList(),
+            TechStack = user.TechStacks.Select(t => t.Name).ToList(),
+            Projects = user.Projects.Select(p => new GetProjectDto
+            {
+              Id = p.Id.ToString(),
+              Name = p.Name,
+              Description = p.Description,
+              Skills = p.LookingForSkills.Select(s => s.Name).ToList(),
+              TechnologyStack = p.TechnologyStack.Select(t => t.Name).ToList(),
+              Developers = p.Developers.Select(d => new GetUserDto
+              {
+                Id = d.Id.ToString(),
+                Name = d.Name,
+                Email = d.Email
+              }).ToList(),
+              Owner = new GetUserDto
+              {
+                Id = p.Owner.Id.ToString(),
+                Name = p.Owner.Name,
+                Bio = p.Owner.Bio,
+                Email = p.Owner.Email
+              },
+              GithubLink = p.GithubLink
+            }).ToList()
+          };
         }
     }
 }

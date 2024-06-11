@@ -29,7 +29,7 @@ public class GetProjectDto
   /// Gets or sets the skills required for the project.
   /// </summary>
   [Required]
-  public List<string> LookingForSkills { get; set; }
+  public List<string> Skills { get; set; }
 
   /// <summary>
   /// Gets or sets the technology stack used in the project.

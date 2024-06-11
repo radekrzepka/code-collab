@@ -1,11 +1,11 @@
-import type { User } from "@/_types/user";
+import type { Developer } from "@/_types/developer";
 
 import { Avatar, AvatarFallback } from "@/_components/ui/avatar";
 import { Badge } from "@/_components/ui/badge";
 import { Card, CardContent } from "@/_components/ui/card";
 
 interface DeveloperCardProps {
-  developer: User;
+  developer: Developer;
 }
 
 export const DeveloperCard = ({

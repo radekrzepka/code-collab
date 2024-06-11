@@ -195,7 +195,7 @@ export const SignUpForm = ({ skills, techStacks }: SignUpFormProps) => {
                   {selectedSkills.map((skill, index) => (
                     <Badge
                       key={skill.id}
-                      className="badge badge-selected cursor-pointer"
+                      className="cursor-pointer"
                       onClick={() => removeSkill(index)}
                     >
                       {skill.name}
@@ -228,7 +228,7 @@ export const SignUpForm = ({ skills, techStacks }: SignUpFormProps) => {
                   {selectedTechStacks.map((skill, index) => (
                     <Badge
                       key={skill.id}
-                      className="badge badge-selected cursor-pointer"
+                      className="cursor-pointer"
                       onClick={() => removeTechStack(index)}
                     >
                       {skill.name}
