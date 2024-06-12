@@ -9,11 +9,13 @@ import { InviteUserToProjectDialog } from "@/(projects)/_components/invite-user-
 interface DeveloperCardProps {
   developer: Developer;
   currentUser?: User;
+  hideSkills?: boolean;
 }
 
 export const DeveloperCard = ({
   developer,
   currentUser,
+  hideSkills = false,
 }: DeveloperCardProps) => {
   const { name, skills, techStack, bio, id } = developer;
 
@@ -37,22 +39,28 @@ export const DeveloperCard = ({
           </div>
           <p className="text-sm">{bio}</p>
         </div>
-        <h2 className="text-lg font-semibold">Skills: </h2>
-        <div className="flex flex-wrap gap-2">
-          {skills.map((skill) => (
-            <Badge variant="destructive" key={skill}>
-              {skill}
-            </Badge>
-          ))}
-        </div>
-        <h2 className="text-lg font-semibold">Tech skills: </h2>
-        <div className="flex flex-wrap gap-2">
-          {techStack.map((technology) => (
-            <Badge variant="destructive" key={technology}>
-              {technology}
-            </Badge>
-          ))}
-        </div>
+
+        {!hideSkills && (
+          <>
+            <h2 className="text-lg font-semibold">Skills: </h2>
+            <div className="flex flex-wrap gap-2">
+              {skills.map((skill) => (
+                <Badge variant="destructive" key={skill}>
+                  {skill}
+                </Badge>
+              ))}
+            </div>
+            <h2 className="text-lg font-semibold">Tech skills: </h2>
+            <div className="flex flex-wrap gap-2">
+              {techStack.map((technology) => (
+                <Badge variant="destructive" key={technology}>
+                  {technology}
+                </Badge>
+              ))}
+            </div>
+          </>
+        )}
+
         {hasOwnProjects && currentUser && currentUser?.id !== id && (
           <InviteUserToProjectDialog owner={currentUser} user={developer} />
         )}
