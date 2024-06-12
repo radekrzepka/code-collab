@@ -9,6 +9,16 @@
  * ---------------------------------------------------------------
  */
 
+export interface CreateInvitationDto {
+  /** @format int32 */
+  projectId?: number;
+  /** @format int32 */
+  receiverId?: number;
+  message?: string | null;
+  /** @format int32 */
+  type?: 0 | 1;
+}
+
 export interface CreateProjectDto {
   /** @minLength 1 */
   name: string;
@@ -84,6 +94,29 @@ export interface GetUserDto {
   techStack: string[];
   /** Gets or sets the projects. */
   projects: GetProjectDto[];
+}
+
+export interface InvitationDto {
+  /** @format int32 */
+  id: number;
+  /** @format int32 */
+  projectId: number;
+  /** @minLength 1 */
+  projectName: string;
+  /** @format int32 */
+  senderId: number;
+  /** @minLength 1 */
+  senderName: string;
+  /** @format int32 */
+  receiverId: number;
+  /** @minLength 1 */
+  receiverName: string;
+  message?: string | null;
+  isAccepted: boolean;
+  /** @format date-time */
+  acceptedAt?: string | null;
+  /** @format int32 */
+  type: 0 | 1;
 }
 
 /** DTO for user login. */
@@ -428,6 +461,58 @@ export class HttpClient<SecurityDataType = unknown> {
 export class Api<
   SecurityDataType extends unknown,
 > extends HttpClient<SecurityDataType> {
+  invitation = {
+    /**
+     * No description
+     *
+     * @tags Invitation
+     * @name InvitationCreate
+     * @request POST:/Invitation
+     * @secure
+     */
+    invitationCreate: (data: CreateInvitationDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/Invitation`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Invitation
+     * @name PendingList
+     * @request GET:/Invitation/pending
+     * @secure
+     */
+    pendingList: (params: RequestParams = {}) =>
+      this.request<InvitationDto[], any>({
+        path: `/Invitation/pending`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Invitation
+     * @name AcceptCreate
+     * @request POST:/Invitation/accept/{invitationId}
+     * @secure
+     */
+    acceptCreate: (invitationId: number, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/Invitation/accept/${invitationId}`,
+        method: "POST",
+        secure: true,
+        ...params,
+      }),
+  };
   project = {
     /**
      * No description

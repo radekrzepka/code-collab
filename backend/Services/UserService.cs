@@ -97,43 +97,6 @@ namespace backend.Services
           {
             return null;
           }
-          
-          Console.WriteLine($"User ID: {user.Id}");
-          Console.WriteLine($"Name: {user.Name}");
-          Console.WriteLine($"Bio: {user.Bio}");
-          Console.WriteLine($"Email: {user.Email}");
-          Console.WriteLine("Skills:");
-          foreach (var skill in user.Skills)
-          {
-            Console.WriteLine($"  - {skill.Name}");
-          }
-          Console.WriteLine("TechStacks:");
-          foreach (var techStack in user.TechStacks)
-          {
-            Console.WriteLine($"  - {techStack.Name}");
-          }
-          Console.WriteLine("Projects:");
-          foreach (var project in user.Projects)
-          {
-            Console.WriteLine($"  - Project ID: {project.Id}, Name: {project.Name}");
-            Console.WriteLine("    LookingForSkills:");
-            foreach (var skill in project.LookingForSkills)
-            {
-              Console.WriteLine($"      - {skill.Name}");
-            }
-            Console.WriteLine("    TechnologyStack:");
-            foreach (var tech in project.TechnologyStack)
-            {
-              Console.WriteLine($"      - {tech.Name}");
-            }
-            Console.WriteLine("    Developers:");
-            foreach (var dev in project.Developers)
-            {
-              Console.WriteLine($"      - {dev.Name} ({dev.Email})");
-            }
-            Console.WriteLine($"    Owner: {project.Owner.Name} ({project.Owner.Email})");
-            Console.WriteLine($"    GithubLink: {project.GithubLink}");
-          }
 
           return new GetUserDto
           {

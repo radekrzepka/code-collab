@@ -21,6 +21,7 @@ namespace backend
             builder.Services.AddScoped<TechStackService>();
             builder.Services.AddScoped<SkillService>();
             builder.Services.AddScoped<ProjectService>();
+            builder.Services.AddScoped<InvitationService>();
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -46,6 +47,7 @@ namespace backend
 
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+                options.UseInlineDefinitionsForEnums();
 
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {

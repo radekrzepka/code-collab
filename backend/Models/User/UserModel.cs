@@ -11,5 +11,9 @@ namespace backend.Models
     public ICollection<TechStack> TechStacks { get; set; }
     public ICollection<Project> Projects { get; set; }
     public ICollection<Project> OwnedProjects { get; set; }
+    
+    public ICollection<Invitation> SentInvitations { get; set; } = new List<Invitation>();
+    public ICollection<Invitation> ReceivedInvitations { get; set; } = new List<Invitation>();
   }
+  
 }

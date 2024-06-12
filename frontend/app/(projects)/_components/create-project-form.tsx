@@ -25,7 +25,7 @@ import { createProject } from "../_api/client/create-project";
 const createProjectSchema = z.object({
   name: z.string().min(1, "Project name is required"),
   description: z.string().min(1, "Description is required"),
-  githubLink: z.string().url().optional(),
+  githubLink: z.string().url().min(1, "Github link is required"),
   skills: z
     .array(z.object({ id: z.number(), name: z.string() }))
     .min(1, "At least one skill is required"),
@@ -61,6 +61,7 @@ export const CreateProjectForm = ({
     onSuccess: () => {
       toast.success("Project created successfully");
       router.push(routes.MAIN);
+      router.refresh();
     },
     onError: (error) => {
       toast.error(error.message);
@@ -146,7 +147,7 @@ export const CreateProjectForm = ({
             )}
           </div>
           <div className="space-y-2">
-            <Label htmlFor="githubLink">GitHub Link (optional)</Label>
+            <Label htmlFor="githubLink">Github Link</Label>
             <Input
               id="githubLink"
               placeholder="https://github.com/your-project"

@@ -9,6 +9,7 @@ namespace backend.Database
       public DbSet<Skill> Skills { get; set; }
       public DbSet<TechStack> TechStacks { get; set; }
       public DbSet<Project> Projects { get; set; }
+      public DbSet<Invitation> Invitations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -49,8 +50,27 @@ namespace backend.Database
                 .HasMany(u => u.OwnedProjects)
                 .WithOne(p => p.Owner)
                 .HasForeignKey(p => p.OwnerId);
+            
+            modelBuilder.Entity<Invitation>()
+              .HasOne(i => i.Project)
+              .WithMany(p => p.Invitations)
+              .HasForeignKey(i => i.ProjectId);
 
-                      // Seed data for Skills
+            modelBuilder.Entity<Invitation>()
+              .HasOne(i => i.Sender)
+              .WithMany(u => u.SentInvitations)
+              .HasForeignKey(i => i.SenderId);
+
+            modelBuilder.Entity<Invitation>()
+              .HasOne(i => i.Receiver)
+              .WithMany(u => u.ReceivedInvitations)
+              .HasForeignKey(i => i.ReceiverId);
+            
+            modelBuilder.Entity<Invitation>()
+              .Property(i => i.Type)
+              .HasConversion<string>();
+
+            // Seed data for Skills
             modelBuilder.Entity<Skill>().HasData(
                 new Skill { Id = 1, Name = "Front-end" },
                 new Skill { Id = 2, Name = "Back-end" },

@@ -11,5 +11,6 @@ namespace backend.Models
     public int OwnerId { get; set; }
     public ICollection<User> Developers { get; set; }
     public string GithubLink { get; set; }
+    public ICollection<Invitation> Invitations { get; set; } = new List<Invitation>();
   }
 }

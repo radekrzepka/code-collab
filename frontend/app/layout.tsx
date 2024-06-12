@@ -33,7 +33,7 @@ const RootLayout = async ({
             <UnauthorizedHeader />
           )}
           {children}
-          <Toaster position="top-right" richColors />
+          <Toaster position="top-right" richColors duration={3000} />
         </QueryClientProvider>
       </body>
     </html>

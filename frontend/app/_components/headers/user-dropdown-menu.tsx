@@ -1,4 +1,8 @@
-import { LogOut, Settings } from "lucide-react";
+"use client";
+
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+import { LogOut } from "lucide-react";
 
 import { Button } from "@/_components/ui/button";
 import {
@@ -10,6 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/_components/ui/dropdown-menu";
+import { routes } from "@/_utils/routes";
 
 import { Avatar, AvatarFallback } from "../ui/avatar";
 
@@ -18,6 +23,8 @@ interface UserDropdownMenuProps {
 }
 
 export const UserDropdownMenu = ({ userName }: UserDropdownMenuProps) => {
+  const router = useRouter();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -33,15 +40,17 @@ export const UserDropdownMenu = ({ userName }: UserDropdownMenuProps) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>{userName}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <Settings className="mr-2 h-4 w-4" />
-            <span>Account Settings</span>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => {
+              Cookies.remove("authToken");
+              router.push(routes.MAIN);
+              router.refresh();
+            }}
+          >
             <LogOut className="mr-2 h-4 w-4" />
             <span>Log Out</span>
           </DropdownMenuItem>

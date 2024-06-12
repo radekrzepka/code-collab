@@ -42,7 +42,7 @@ export const BrowseProjectCard = ({
               <p>Looking for: </p>
               <div className=" flex flex-wrap gap-2">
                 {skills.map((skill) => (
-                  <Badge variant="outline" key={skill}>
+                  <Badge variant="destructive" key={skill}>
                     {skill}
                   </Badge>
                 ))}
@@ -52,7 +52,7 @@ export const BrowseProjectCard = ({
           <p>Tech stack: </p>
           <div className="flex flex-wrap gap-2">
             {technologyStack.map((technology) => (
-              <Badge variant="outline" key={technology}>
+              <Badge variant="destructive" key={technology}>
                 {technology}
               </Badge>
             ))}

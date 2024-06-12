@@ -1,22 +1,18 @@
 import type { User } from "@/_types/user";
-import { FileText, MessageSquare, Users } from "lucide-react";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/_components/ui/card";
+import { getPendingInvitations } from "@/(projects)/_api/get-pending-invitations";
 import { BrowseProjectCard } from "@/(projects)/_components/browse-project-card";
+import { JoinProjectActivityFeedCard } from "@/(projects)/_components/join-project-activity-feed-card";
 
 interface DashboardProps {
   currentUser: User;
 }
 
-export const Dashboard = ({
+export const Dashboard = async ({
   currentUser: { name, projects },
 }: DashboardProps) => {
+  const pendingInvitations = await getPendingInvitations();
+
   return (
     <main className="flex flex-1 flex-col gap-4 md:gap-8 ">
       <div className="mx-auto flex w-full max-w-6xl items-center">
@@ -28,42 +24,12 @@ export const Dashboard = ({
         <h1 className="text-2xl font-semibold">Activity Feed</h1>
       </div>
       <div className="mx-auto grid w-full max-w-6xl gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <Card>
-          <CardHeader className="flex flex-row items-center gap-4">
-            <MessageSquare className="h-8 w-8" />
-            <div className="grid gap-1">
-              <CardTitle>New Message</CardTitle>
-              <CardDescription>From: User1</CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent className="grid gap-2">
-            <div className="text-sm font-semibold">Received: 3h ago</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center gap-4">
-            <Users className="h-8 w-8" />
-            <div className="grid gap-1">
-              <CardTitle>Project Invitation</CardTitle>
-              <CardDescription>From: User2</CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent className="grid gap-2">
-            <div className="text-sm font-semibold">Received: 1 day ago</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center gap-4">
-            <FileText className="h-8 w-8" />
-            <div className="grid gap-1">
-              <CardTitle>Project Update</CardTitle>
-              <CardDescription>Project: Project 1</CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent className="grid gap-2">
-            <div className="text-sm font-semibold">Updated: 2 days ago</div>
-          </CardContent>
-        </Card>
+        {pendingInvitations.map((invitation) => (
+          <JoinProjectActivityFeedCard
+            key={invitation.id}
+            invitation={invitation}
+          />
+        ))}
       </div>
       <div>
         <div className="mx-auto flex w-full max-w-6xl items-center gap-4">

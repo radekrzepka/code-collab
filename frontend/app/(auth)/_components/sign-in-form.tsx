@@ -15,6 +15,7 @@ import { Card, CardContent } from "@/_components/ui/card";
 import { Input } from "@/_components/ui/input";
 import { Label } from "@/_components/ui/label";
 import { routes } from "@/_utils/routes";
+import { cn } from "@/_utils/utils";
 
 import { signInUser } from "../_api/client/sign-in-user";
 
@@ -23,14 +24,22 @@ const signInSchema = z.object({
   password: z.string().min(1, "Password is required"),
 });
 
-export const SignInForm = () => {
+interface SignInFormProps {
+  redirectPath?: string;
+  inDialog?: boolean;
+}
+
+export const SignInForm = ({
+  redirectPath = routes.MAIN,
+  inDialog = false,
+}: SignInFormProps) => {
   const router = useRouter();
 
   const { mutate, isLoading } = useMutation<TokenDto, Error, LoginUserDto>({
     mutationFn: signInUser,
     onSuccess: ({ token }) => {
       Cookies.set("authToken", token);
-      router.push(routes.MAIN);
+      router.push(redirectPath);
       router.refresh();
     },
     onError: () => {
@@ -61,7 +70,7 @@ export const SignInForm = () => {
             Welcome back! Sign in to continue collaborating.
           </p>
         </div>
-        <Card className="w-full">
+        <Card className={cn("w-full", inDialog && "border-none")}>
           <CardContent className="space-y-4">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="space-y-2">
