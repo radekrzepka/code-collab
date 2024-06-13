@@ -22,6 +22,7 @@ namespace backend
             builder.Services.AddScoped<SkillService>();
             builder.Services.AddScoped<ProjectService>();
             builder.Services.AddScoped<InvitationService>();
+            builder.Services.AddScoped<ProjectTaskService>();
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));

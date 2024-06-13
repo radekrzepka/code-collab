@@ -12,5 +12,6 @@ namespace backend.Models
     public ICollection<User> Developers { get; set; }
     public string GithubLink { get; set; }
     public ICollection<Invitation> Invitations { get; set; } = new List<Invitation>();
+    public ICollection<ProjectTask> ProjectTasks { get; set; } = new List<ProjectTask>();
   }
 }

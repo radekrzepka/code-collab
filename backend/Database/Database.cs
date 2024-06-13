@@ -10,6 +10,7 @@ namespace backend.Database
       public DbSet<TechStack> TechStacks { get; set; }
       public DbSet<Project> Projects { get; set; }
       public DbSet<Invitation> Invitations { get; set; }
+      public DbSet<ProjectTask> ProjectTasks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -69,6 +70,16 @@ namespace backend.Database
             modelBuilder.Entity<Invitation>()
               .Property(i => i.Type)
               .HasConversion<string>();
+            
+            modelBuilder.Entity<ProjectTask>()
+              .HasOne(t => t.Assignee)
+              .WithMany(u => u.ProjectTasks)
+              .HasForeignKey(t => t.AssigneeId);
+
+            modelBuilder.Entity<ProjectTask>()
+              .HasOne(t => t.Project)
+              .WithMany(p => p.ProjectTasks)
+              .HasForeignKey(t => t.ProjectId);
 
             // Seed data for Skills
             modelBuilder.Entity<Skill>().HasData(

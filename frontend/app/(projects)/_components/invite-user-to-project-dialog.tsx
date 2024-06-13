@@ -83,7 +83,7 @@ export const InviteUserToProjectDialog = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Invite to your project</Button>
+        <Button variant="outline">Invite to your project</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -116,7 +116,6 @@ export const InviteUserToProjectDialog = ({
               </Select>
             )}
           />
-
           {errors.projectId && (
             <p className="text-sm text-red-500">{errors.projectId.message}</p>
           )}

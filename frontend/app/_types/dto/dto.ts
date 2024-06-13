@@ -29,6 +29,19 @@ export interface CreateProjectDto {
   techStacks: string[];
 }
 
+export interface CreateProjectTaskDto {
+  /** @minLength 1 */
+  name: string;
+  /** @format int32 */
+  assigneeId: number;
+  /** @format date-time */
+  dueDate: string;
+  /** @format int32 */
+  status: 0 | 1 | 2;
+  /** @format int32 */
+  projectId: number;
+}
+
 export interface DefaultApiResponseDto {
   /** @minLength 1 */
   message: string;
@@ -143,6 +156,21 @@ export interface ProblemDetails {
   [key: string]: any;
 }
 
+export interface ProjectTaskDto {
+  /** @format int32 */
+  id: number;
+  /** @minLength 1 */
+  name: string;
+  /** @minLength 1 */
+  assignee: string;
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  dueDate: string;
+  /** @format int32 */
+  status: 0 | 1 | 2;
+}
+
 export interface RegisterUserDto {
   /**
    * Gets or sets the username.
@@ -189,6 +217,17 @@ export interface TokenDto {
    * @minLength 1
    */
   token: string;
+}
+
+export interface UpdateProjectTaskDto {
+  /** @minLength 1 */
+  name: string;
+  /** @format int32 */
+  assigneeId: number;
+  /** @format date-time */
+  dueDate: string;
+  /** @format int32 */
+  status: 0 | 1 | 2;
 }
 
 export interface UserListDto {
@@ -561,6 +600,83 @@ export class Api<
         body: data,
         secure: true,
         type: ContentType.Json,
+        ...params,
+      }),
+  };
+  projectTask = {
+    /**
+     * No description
+     *
+     * @tags ProjectTask
+     * @name ProjectTaskDetail
+     * @request GET:/ProjectTask/{projectId}
+     * @secure
+     */
+    projectTaskDetail: (projectId: number, params: RequestParams = {}) =>
+      this.request<ProjectTaskDto[], any>({
+        path: `/ProjectTask/${projectId}`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags ProjectTask
+     * @name ProjectTaskCreate
+     * @request POST:/ProjectTask
+     * @secure
+     */
+    projectTaskCreate: (
+      data: CreateProjectTaskDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/ProjectTask`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags ProjectTask
+     * @name ProjectTaskUpdate
+     * @request PUT:/ProjectTask/{id}
+     * @secure
+     */
+    projectTaskUpdate: (
+      id: number,
+      data: UpdateProjectTaskDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/ProjectTask/${id}`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags ProjectTask
+     * @name ProjectTaskDelete
+     * @request DELETE:/ProjectTask/{id}
+     * @secure
+     */
+    projectTaskDelete: (id: number, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/ProjectTask/${id}`,
+        method: "DELETE",
+        secure: true,
         ...params,
       }),
   };

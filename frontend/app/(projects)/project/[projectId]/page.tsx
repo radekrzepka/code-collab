@@ -5,6 +5,7 @@ import { getCurrentUser } from "@/(auth)/_api/server/get-current-user";
 import { SignInDialog } from "@/(auth)/_components/sign-in-dialog";
 import { DeveloperCard } from "@/(developers)/_components/developer-card";
 import { getProject } from "@/(projects)/_api/get-project";
+import { getProjectTasks } from "@/(projects)/_api/get-project-tasks";
 import { JoinProjectDialog } from "@/(projects)/_components/join-project-dialog";
 import { TaskTable } from "@/(tasks)/_components/task-table";
 
@@ -13,9 +14,10 @@ const ProjectPage = async ({
 }: {
   params: { projectId: string };
 }) => {
-  const [currentUser, project] = await Promise.all([
+  const [currentUser, project, projectTasks] = await Promise.all([
     getCurrentUser(),
     getProject(parseInt(projectId)),
+    getProjectTasks(parseInt(projectId)),
   ]);
 
   const {
@@ -37,13 +39,13 @@ const ProjectPage = async ({
         <p className="md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
           {description}
         </p>
-        <div className="flex flex-col gap-6 2xl:flex-row">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[auto_1fr]">
           <div className="flex flex-col gap-3">
             <div className="flex flex-col gap-3">
               <h2 className="text-xl font-bold">Required skills: </h2>
               <div className="flex flex-wrap gap-3">
                 {skills.map((skill) => (
-                  <Badge variant="destructive" key={skill}>
+                  <Badge variant="outline" key={skill}>
                     {skill}
                   </Badge>
                 ))}
@@ -51,7 +53,7 @@ const ProjectPage = async ({
               <h2 className="text-xl font-bold">Tech stack: </h2>
               <div className="flex flex-wrap gap-3">
                 {technologyStack.map((technology) => (
-                  <Badge variant="destructive" key={technology}>
+                  <Badge variant="outline" key={technology}>
                     {technology}
                   </Badge>
                 ))}
@@ -71,7 +73,6 @@ const ProjectPage = async ({
                 View on GitHub
               </Link>
             </div>
-
             <div>
               <h2 className="mb-2 text-xl font-bold">Owner: </h2>
               <div className="flex gap-y-3">
@@ -85,7 +86,7 @@ const ProjectPage = async ({
             </div>
             <div>
               <h2 className="mb-2 text-xl font-bold">Current Team: </h2>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex w-full flex-wrap gap-2">
                 {developers.map((developer) => (
                   <DeveloperCard
                     key={developer.id}
@@ -97,7 +98,7 @@ const ProjectPage = async ({
               </div>
             </div>
           </div>
-          <TaskTable />
+          <TaskTable tasks={projectTasks} project={project} />
         </div>
       </section>
     </main>

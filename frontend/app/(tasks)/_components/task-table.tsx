@@ -1,8 +1,14 @@
 "use client";
 
+import type { Project } from "@/_types/project";
 import type { Task } from "@/_types/task";
 import type { SetStateAction } from "react";
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { format } from "date-fns";
+import { TrashIcon } from "lucide-react";
+import { useMutation } from "react-query";
+import { toast } from "sonner";
 
 import { Badge } from "@/_components/ui/badge";
 import { Button } from "@/_components/ui/button";
@@ -14,85 +20,58 @@ import {
   TableHeader,
   TableRow,
 } from "@/_components/ui/table";
-import { TaskStatus } from "@/_types/task";
 
-export const TaskTable = () => {
-  const [tasks, setTasks] = useState<Array<Task>>([
-    {
-      id: 1,
-      name: "Redesign website homepage",
-      assignee: "John Doe",
-      dueDate: "2023-06-30",
-      status: TaskStatus.DONE,
-    },
-    {
-      id: 2,
-      name: "Implement new checkout flow",
-      assignee: "Jane Smith",
-      dueDate: "2023-07-15",
-      status: TaskStatus.IN_PROGRESS,
-    },
-    {
-      id: 3,
-      name: "Write technical documentation",
-      assignee: "Michael Johnson",
-      dueDate: "2023-08-01",
-      status: TaskStatus.TODO,
-    },
-    {
-      id: 4,
-      name: "Optimize database queries",
-      assignee: "Emily Davis",
-      dueDate: "2023-07-31",
-      status: TaskStatus.DONE,
-    },
-    {
-      id: 5,
-      name: "Develop mobile app prototype",
-      assignee: "David Lee",
-      dueDate: "2023-09-01",
-      status: TaskStatus.DONE,
-    },
-    {
-      id: 6,
-      name: "Refactor codebase to use React Hooks",
-      assignee: "Sarah Kim",
-      dueDate: "2023-08-15",
-      status: TaskStatus.TODO,
-    },
-    {
-      id: 7,
-      name: "Implement user authentication system",
-      assignee: "Tom Wilson",
-      dueDate: "2023-07-20",
-      status: TaskStatus.IN_PROGRESS,
-    },
-    {
-      id: 8,
-      name: "Create marketing campaign assets",
-      assignee: "Jessica Nguyen",
-      dueDate: "2023-09-10",
-      status: TaskStatus.DONE,
-    },
-    {
-      id: 9,
-      name: "Optimize website performance",
-      assignee: "Robert Hernandez",
-      dueDate: "2023-08-31",
-      status: TaskStatus.IN_PROGRESS,
-    },
-    {
-      id: 10,
-      name: "Develop new product feature",
-      assignee: "Olivia Gonzalez",
-      dueDate: "2023-10-01",
-      status: TaskStatus.DONE,
-    },
-  ]);
-  const [sortColumn, setSortColumn] = useState("name");
+import { deleteTask } from "../_api/client/delete-task";
+import { TaskDialog } from "./task-dialog";
+
+export const taskStatusDetails = {
+  0: {
+    variant: "outline",
+    label: "To do",
+  },
+  1: {
+    variant: "yellow",
+    label: "In progress",
+  },
+  2: {
+    variant: "green",
+    label: "Done",
+  },
+} as const;
+
+interface TasksTableProps {
+  tasks: Array<Task>;
+  project: Project;
+}
+
+const TABLE_HEADERS = [
+  { key: "name", label: "Task Name", sortable: true },
+  { key: "assignee", label: "Assignee", sortable: true },
+  { key: "dueDate", label: "Due Date", sortable: true },
+  { key: "status", label: "Status", sortable: true },
+  { key: "actions", label: "Actions", sortable: false },
+] as const;
+
+type ColumnNames = "name" | "assignee" | "dueDate" | "status";
+
+export const TaskTable = ({ tasks, project }: TasksTableProps) => {
+  const router = useRouter();
+
+  const [sortColumn, setSortColumn] = useState<ColumnNames>("name");
   const [sortDirection, setSortDirection] = useState("asc");
 
-  const handleSort = (column: SetStateAction<string>) => {
+  const { mutate, isLoading } = useMutation<void, Error, number>({
+    mutationFn: deleteTask,
+    onSuccess: () => {
+      toast.success("Task deleted successfully");
+      router.refresh();
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const handleSort = (column: SetStateAction<ColumnNames>) => {
     if (column === sortColumn) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
@@ -112,58 +91,31 @@ export const TaskTable = () => {
   }, [tasks, sortColumn, sortDirection]);
 
   return (
-    <div className="w-full max-w-4xl">
+    <div className="w-full max-w-4xl xl:mx-auto">
       <div className="mb-4 flex justify-end">
-        <Button>Add Task</Button>
+        <TaskDialog project={project} />
       </div>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead
-              className="cursor-pointer"
-              onClick={() => handleSort("name")}
-            >
-              Task Name
-              {sortColumn === "name" && (
-                <span className="ml-2">
-                  {sortDirection === "asc" ? "\u2191" : "\u2193"}
-                </span>
-              )}
-            </TableHead>
-            <TableHead
-              className="cursor-pointer"
-              onClick={() => handleSort("assignee")}
-            >
-              Assignee
-              {sortColumn === "assignee" && (
-                <span className="ml-2">
-                  {sortDirection === "asc" ? "\u2191" : "\u2193"}
-                </span>
-              )}
-            </TableHead>
-            <TableHead
-              className="cursor-pointer"
-              onClick={() => handleSort("dueDate")}
-            >
-              Due Date
-              {sortColumn === "dueDate" && (
-                <span className="ml-2">
-                  {sortDirection === "asc" ? "\u2191" : "\u2193"}
-                </span>
-              )}
-            </TableHead>
-            <TableHead
-              className="cursor-pointer"
-              onClick={() => handleSort("status")}
-            >
-              Status
-              {sortColumn === "status" && (
-                <span className="ml-2">
-                  {sortDirection === "asc" ? "\u2191" : "\u2193"}
-                </span>
-              )}
-            </TableHead>
-            <TableHead>Actions</TableHead>
+            {TABLE_HEADERS.map((header) => (
+              <TableHead
+                key={header.key}
+                className={header.sortable === false ? "" : "cursor-pointer"}
+                onClick={() =>
+                  header.sortable !== false
+                    ? handleSort(header.key as ColumnNames)
+                    : null
+                }
+              >
+                {header.label}
+                {sortColumn === header.key && (
+                  <span className="ml-2">
+                    {sortDirection === "asc" ? "\u2191" : "\u2193"}
+                  </span>
+                )}
+              </TableHead>
+            ))}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -171,17 +123,25 @@ export const TaskTable = () => {
             <TableRow key={task.id}>
               <TableCell>{task.name}</TableCell>
               <TableCell>{task.assignee}</TableCell>
-              <TableCell>{task.dueDate}</TableCell>
+              <TableCell>{format(task.dueDate, "PPP")}</TableCell>
               <TableCell>
-                <Badge>{task.status}</Badge>
+                <Badge
+                  className="whitespace-nowrap"
+                  variant={taskStatusDetails[task.status as 0 | 1 | 2].variant}
+                >
+                  {taskStatusDetails[task.status as 0 | 1 | 2].label}
+                </Badge>
               </TableCell>
               <TableCell>
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm">
-                    Edit
-                  </Button>
-                  <Button variant="destructive" size="sm">
-                    Delete
+                  <TaskDialog project={project} task={task} />
+                  <Button
+                    size="icon"
+                    className="h-8 w-8 rounded-full"
+                    onClick={() => mutate(task.id)}
+                    disabled={isLoading}
+                  >
+                    <TrashIcon className="h-4 w-4" />
                   </Button>
                 </div>
               </TableCell>

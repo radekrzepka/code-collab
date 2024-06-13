@@ -14,6 +14,7 @@ namespace backend.Models
     
     public ICollection<Invitation> SentInvitations { get; set; } = new List<Invitation>();
     public ICollection<Invitation> ReceivedInvitations { get; set; } = new List<Invitation>();
+    public ICollection<ProjectTask> ProjectTasks { get; set; } = new List<ProjectTask>();
   }
   
 }
