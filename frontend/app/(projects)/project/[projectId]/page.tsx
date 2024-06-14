@@ -98,7 +98,10 @@ const ProjectPage = async ({
               </div>
             </div>
           </div>
-          <TaskTable tasks={projectTasks} project={project} />
+          {currentUser &&
+            project.developers.find((dev) => dev.id === currentUser.id) && (
+              <TaskTable tasks={projectTasks} project={project} />
+            )}
         </div>
       </section>
     </main>

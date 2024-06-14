@@ -17,6 +17,8 @@ namespace backend.Models
     public string? Message { get; set; }
     public bool IsAccepted { get; set; }
     public DateTime? AcceptedAt { get; set; }
+    public bool IsDeclined { get; set; } 
+    public DateTime? DeclinedAt { get; set; }
     public InvitationType Type { get; set; }
   }
 }

@@ -43,7 +43,7 @@ namespace backend.Services
 
             if (existingInvitation != null)
             {
-              return (false, "An identical invitation already exists.");
+              return (true, "Invitation sent successfully.");
             }
 
             var invitation = new Invitation
@@ -65,7 +65,7 @@ namespace backend.Services
         public async Task<List<InvitationDto>> GetPendingInvitationsAsync(int ownerId)
         {
             return await _context.Invitations
-                .Where(i => i.ReceiverId == ownerId && !i.IsAccepted)
+                .Where(i => i.ReceiverId == ownerId && !i.IsAccepted && !i.IsDeclined)
                 .Select(i => new InvitationDto
                 {
                     Id = i.Id,
@@ -105,6 +105,22 @@ namespace backend.Services
             await _context.SaveChangesAsync();
 
             return (true, "Invitation accepted successfully.");
+        }
+        
+        public async Task<(bool Success, string Message)> DeclineInvitationAsync(int invitationId, int userId)
+        {
+          var invitation = await _context.Invitations.FindAsync(invitationId);
+          if (invitation == null || invitation.ReceiverId != userId)
+          {
+            return (false, "Invalid invitation or unauthorized access.");
+          }
+
+          invitation.IsDeclined = true;
+          invitation.DeclinedAt = DateTime.UtcNow;
+
+          await _context.SaveChangesAsync();
+
+          return (true, "Invitation declined successfully.");
         }
     }
 }

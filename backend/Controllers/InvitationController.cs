@@ -57,5 +57,20 @@ namespace backend.Controllers
 
       return Ok(result.Message);
     }
+    
+    [Authorize]
+    [HttpPost("decline/{invitationId}")]
+    public async Task<IActionResult> DeclineInvitation(int invitationId)
+    {
+      var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+      var result = await _invitationService.DeclineInvitationAsync(invitationId, userId);
+
+      if (!result.Success)
+      {
+        return BadRequest(result.Message);
+      }
+
+      return Ok(result.Message);
+    }
   }
 }

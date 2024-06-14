@@ -45,17 +45,13 @@ export const DeveloperCard = ({
             <h2 className="text-lg font-semibold">Skills: </h2>
             <div className="flex flex-wrap gap-2">
               {skills.map((skill) => (
-                <Badge variant="destructive" key={skill}>
-                  {skill}
-                </Badge>
+                <Badge key={skill}>{skill}</Badge>
               ))}
             </div>
             <h2 className="text-lg font-semibold">Tech skills: </h2>
             <div className="flex flex-wrap gap-2">
               {techStack.map((technology) => (
-                <Badge variant="destructive" key={technology}>
-                  {technology}
-                </Badge>
+                <Badge key={technology}>{technology}</Badge>
               ))}
             </div>
           </>

@@ -17,6 +17,7 @@ import {
 import { InvitationType } from "@/_types/invitation";
 
 import { acceptInvitation } from "../_api/client/accept-invitation";
+import { declineInvitation } from "../_api/client/decline-invitation";
 
 interface JoinProjectActivityFeedCardProps {
   invitation: Invitation;
@@ -27,10 +28,29 @@ export const JoinProjectActivityFeedCard = ({
 }: JoinProjectActivityFeedCardProps) => {
   const router = useRouter();
 
-  const { mutate, isLoading } = useMutation<void, Error, void>({
+  const { mutate: acceptMutate, isLoading: acceptLoading } = useMutation<
+    void,
+    Error,
+    void
+  >({
     mutationFn: () => acceptInvitation(invitation.id),
     onSuccess: () => {
       toast.success("Invitation accepted");
+      router.refresh();
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const { mutate: declineMutate, isLoading: declineLoading } = useMutation<
+    void,
+    Error,
+    void
+  >({
+    mutationFn: () => declineInvitation(invitation.id),
+    onSuccess: () => {
+      toast.success("Invitation declined");
       router.refresh();
     },
     onError: (error) => {
@@ -63,9 +83,14 @@ export const JoinProjectActivityFeedCard = ({
         </div>
       </CardHeader>
       <CardFooter>
-        <Button onClick={() => mutate()} disabled={isLoading}>
-          {isLoading ? "Accepting invitation" : "Accept invitation"}
-        </Button>
+        <div className="flex space-x-2">
+          <Button onClick={() => acceptMutate()} disabled={acceptLoading}>
+            {acceptLoading ? "Accepting invitation" : "Accept invitation"}
+          </Button>
+          <Button onClick={() => declineMutate()} disabled={declineLoading}>
+            {declineLoading ? "Declining invitation" : "Decline invitation"}
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );

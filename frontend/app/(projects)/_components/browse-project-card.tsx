@@ -17,6 +17,14 @@ interface BrowseProjectCardProps {
   hideLookingFor?: boolean;
 }
 
+export const truncateDescription = (text: string, maxWords = 30) => {
+  const words = text.split(" ");
+  if (words.length > maxWords) {
+    return words.slice(0, maxWords).join(" ") + "...";
+  }
+  return text;
+};
+
 export const BrowseProjectCard = ({
   project: { description, id, name, skills, technologyStack },
   hideLookingFor = false,
@@ -34,17 +42,14 @@ export const BrowseProjectCard = ({
           src={imagesRoutes.BROWSE_PROJECT_PLACEHOLDER}
           width={150}
         />
-        <p className="text-gray-400">{description}</p>
+        <p className="text-gray-400">{truncateDescription(description)}</p>
         <div className="flex flex-col gap-2">
           {!hideLookingFor && (
             <>
-              {" "}
               <p>Looking for: </p>
               <div className=" flex flex-wrap gap-2">
                 {skills.map((skill) => (
-                  <Badge variant="destructive" key={skill}>
-                    {skill}
-                  </Badge>
+                  <Badge key={skill}>{skill}</Badge>
                 ))}
               </div>
             </>
@@ -52,9 +57,7 @@ export const BrowseProjectCard = ({
           <p>Tech stack: </p>
           <div className="flex flex-wrap gap-2">
             {technologyStack.map((technology) => (
-              <Badge variant="destructive" key={technology}>
-                {technology}
-              </Badge>
+              <Badge key={technology}>{technology}</Badge>
             ))}
           </div>
         </div>
